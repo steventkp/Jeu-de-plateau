@@ -1,0 +1,21 @@
+//Les images se situent dans le fichier assets.scss
+@import "./assets.scss";
+
+#board {
+    background-image: $background-ground;
+    background-repeat: repeat;
+    border-spacing: 0;
+}
+
+#board td {
+    height: 60px;
+    width: 60px;
+    border: solid 1px rgba(0, 0, 0, 0.226);
+}
+.obstacle-case
+{
+   background-image: $obstacle;
+   background-size: contain;
+   background-repeat: no-repeat;
+   background-position: center;
+}
