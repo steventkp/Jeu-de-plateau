@@ -2,7 +2,7 @@
 Réalisé dans le cadre de la formation développeur d'application front-end Openclassrooms
 
 
-## Etape 1 : la carte des restaurants
+## Etape 1 : génération de la carte
 Commencez par générer aléatoirement la carte du jeu. Chaque case peut être soit :
 
 Vide
@@ -17,7 +17,7 @@ Le placement des deux joueurs est lui aussi aléatoire sur la carte au chargemen
 
 **Cette étape du projet est disponible dans la branche : Etape 1**
 
-## Etape 1 : génération de la carte
+## Etape 2 : les mouvements
 
 A chaque tour, un joueur peut se déplacer d’une à trois cases (horizontalement ou verticalement) avant de terminer son tour. Vos visiteurs aimeraient eux aussi donner leur avis sur des restaurants !Proposez-leur :
 
@@ -27,13 +27,7 @@ D'ajouter un restaurant, en cliquant sur un lieu spécifique de la carte
 
 Une fois un avis ou un restaurant ajouté, il apparaît immédiatement sur la carte. Un nouveau marqueur apparaît pour indiquer la position du nouveau restaurant.
 
-Les informations ne seront pas sauvegardées si on quitte la page (elles restent juste en mémoire le temps de la visite).
-
-## Etape 2 : les mouvements
-
-A chaque tour, un joueur peut se déplacer d’une à trois cases (horizontalement ou verticalement) avant de terminer son tour. Il ne peut évidemment pas passer à travers un obstacle.
-
-Si un joueur passe sur une case contenant une arme, il laisse son arme actuelle sur place et la remplace par la nouvelle.
+Les informations ne seront pas sauvegardées si on quitte la page (elles restent juste en mémoire le temps de la visite.
 
 ## Etape 3 : le combat !
 
