@@ -1,5 +1,6 @@
-//Ce fichier contient toutes les variables constantes qui serviront
-// à stocker les différents informations utiles au fonction du jeu
-export const constantes = {
-    cells:[],
+/**
+ * Informations stockés pour le fonctionnement du jeu
+ */
+export const gameInfos = {
+    obstaclesIndexes:[],
 }

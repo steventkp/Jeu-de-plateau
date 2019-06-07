@@ -1,8 +1,8 @@
-import { Grid} from './grid';
+import { Grid } from './grid';
 import $ from 'jquery'
+import { gameInfos } from './globals';
 
 $(function() {
-    const grid = new Grid();
-    grid.createGrid()
-    grid.createObstacle();
-  });
+    new Grid();
+});
+	console.log(gameInfos.obstaclesIndexes);

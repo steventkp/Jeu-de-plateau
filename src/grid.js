@@ -1,71 +1,78 @@
 import $ from 'jquery'
-import { constantes } from './globals';
-import { gameCfg } from './config'
+import { gameConfig } from './config'
+import { gameInfos } from './globals'
+import { Cell } from './cell'
 
+/**
+ *Classe Grid qui génére le plateau et les obstacles via ses méthodes
+ * @export
+ * @class Grid
+ */
 export class Grid {
-    //Constructeur avec deux variables une pour la colonne et une pour la ligne
-    //Dans notre cas on considère que notre plateau sera toujours 'carré' donc on affecte la même valeur aux deux variables
+    /**
+     *Constructeur avec deux variables une pour la colonne et une pour la ligne
+     *Une fonction build qui permet de construire le plateau
+     *et une fonction createObstacle pour génerer les obstacles
+     *Crée une instance de Grid
+     * @memberof Grid
+     */
     constructor() {
-        this.col = gameCfg.boardSize;
-        this.row = gameCfg.boardSize;
+        this.col = gameConfig.boardSize;
+        this.row = gameConfig.boardSize;
+        this.build(this.col,this.row);
+        this.createObstacle(gameConfig.numberObstacles);
     }
-
+    /**
+     *Getter qui récupére un entier aléatoire compris entre 0 et le nombre de cases du plateau
+     * @readonly
+     * @memberof Grid
+     */
+    get randomCellId(){
+        return Math.floor(Math.random() * Math.floor(this.col * this.row));
+    }
     //Création du plateau
-    createGrid() {
+    /**
+     *Méthode build qui créer le plateau avec numberCols et numberRows passés en paramètres
+     * @param {*} numberCols (Nombre de colonnes)
+     * @param {*} numberRows (Nombre de lignes)
+     * @memberof Grid
+     */
+    build(numberCols, numberRows) {
         //On crée un élement table
         let table = document.createElement('table');
         //On lui ajouter une id board
         table.id = 'board';
         // On boucle sur un tr pour créer une ligne
-        for (let i = 0; i < (this.row); i++) {
+        for (let i = 0; i < (numberRows); i++) {
             const tr = document.createElement('tr');
             //On attache le tr à l'élement table
             $(table).append(tr);
             //On boucle une nouvelle fois pour ajouter une colonne dans la ligne que l'on vient de créer
-            for (let j = 0; j < (this.col); j++) {
+            for (let j = 0; j < (numberCols); j++) {
                 //On crée cette fois un élément td
-                const td = document.createElement('td', table.rows[i]);
+                const td = new Cell().build(i,j);
                 //On attache notre élément crée à la table
-                $(table).append(td);
-                //On ajouter un ID que l'on crée à partir des deux variables i et j 
-                //Le parseInt est appliqué pour avoir par exemple la première ligne qui a pour ID : '0' au lieu de  '00'
-                td.id = parseInt(i + '' + j);
-                //On ajouter un objet contenant différentes propriétés dans un tableau 'constantes.cells'
-                //Ce tableau permettera de stocker des informations utiles et les mettres à jour par la suite
-                constantes.cells.push({
-                    // Indique la présence ou non d'un obstacle
-                    obstacle: false
-                });
+                $(tr).append(td);
             }
         }
         // On attache notre tableau au body html
         $('body').append(table);
     }
-    //Methode qui permet de créer un obstacle
-    createObstacle() {
-        //On initialise la variable i à zéro
-        let i = 0;
-        //On boucle. Tant qu'on a pas atteint le nombre d'obstacle, on continue
-        //NB : Le nombre d'obstacle se modifie dans le fichier config js (numberObstacles)
-        while (i < gameCfg.numberObstacles) {
-            //On initialise la variable randomInt avec un nombre aléatoire qui peut aller jusqu'a 99 compris, 100 est exclu
-            const randomInt = Math.floor(Math.random() * Math.floor(100));
-            //On utilise un switch case 
-            switch (constantes.cells[randomInt].obstacle) {
-                //Si il n'y a pas d'obstacle à l'index de notre tableau de cellules alors ..
-                case false:
-                    //On modifie le booleen pour lui indiquer que l'on va mettre un obstacle 
-                    constantes.cells[randomInt].obstacle = true;
-                    //On ajoute dans le DOM à l'ID correspondant une classe obstacle qui va ajouter une image
-                    $('#' + randomInt).addClass('obstacle-case');
-                    //On incrémente pour arriver jusqu'au nombre d'obstacles voulu
-                    i++;
-                    break;
-                //Si la valeur du switch est true(si un obstacle est situé l'index correspondant au random)
-                //on effectue aucune instruction et on retourne dans la boucle
-                case true:
-                    break;
+    /**
+     *
+     * @param {*} numberObstacles
+     * @memberof Grid
+     */
+    createObstacle(numberObstacles) {
+        let i = 1;
+        while(i <= numberObstacles && numberObstacles > 0){
+            const randomId = this.randomCellId;
+            if(!gameInfos.obstaclesIndexes.includes(randomId)){
+                $('#'+randomId).addClass('obstacle-case');
+                gameInfos.obstaclesIndexes.push(randomId);
+                i++;
             }
         }
     }
 }
+
