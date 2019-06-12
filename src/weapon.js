@@ -1,8 +1,4 @@
 import $ from 'jquery'
-import { gameInfos } from './globals';
-import { gameConfig } from './config';
-import { Grid } from './grid';
-
 export class Weapon {
     constructor(weaponId,position,damage,urlsImg){
         this.id = weaponId;

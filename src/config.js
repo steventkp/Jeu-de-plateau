@@ -1,4 +1,3 @@
-
 /**
  * Fichier de configuration du jeu
  * boardSize (Nombre de cases sur les axes x et y)

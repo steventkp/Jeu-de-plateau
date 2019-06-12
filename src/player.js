@@ -1,6 +1,5 @@
 import $ from 'jquery'
 import { gameInfos } from './globals';
-import { gameConfig } from './config';
 
 /**
  *La classe Player permet de créer un joueur via son constructeur et d'éxécuter ses méthodes
