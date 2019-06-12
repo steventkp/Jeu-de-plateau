@@ -12,10 +12,33 @@
     width: 60px;
     border: solid 1px rgba(0, 0, 0, 0.226);
 }
-.obstacle-case
-{
-   background-image: $obstacle;
-   background-size: contain;
+
+.obstacle-case {
+    background-image: $obstacle;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.weapon {
+   background-size: 30%;
    background-repeat: no-repeat;
    background-position: center;
+}
+
+.player {
+    margin-left: 25%;
+    width: 50%;
+  }
+.highlighted-cell{
+   background: #40632d;
+   background-size: 30%;
+   background-repeat: no-repeat;
+   background-position: center;
+   &:hover{
+      background: #796741;
+      background-size: 30%;
+      background-repeat: no-repeat;
+      background-position: center;
+   }
 }

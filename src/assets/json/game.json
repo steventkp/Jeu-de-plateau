@@ -1,0 +1,81 @@
+{
+    "game":{
+        "weapons":[
+            {
+                "id":"5",
+                "position":null,
+                "name":"normal",
+                "damage":"10",
+                "urlsImg":["./assets/images/red_pokeball.png","./assets/images/weapon_normal.png"]
+            },
+            {
+                "id":"4",
+                "position":null,
+                "name":"normal",
+                "damage":"10",
+                "urlsImg":["./assets/images/violet_pokeball.png","./assets/images/weapon_normal.png"]
+            },
+            {
+                "id":"3",
+                "position":null,
+                "name":"eau",
+                "damage":"20",
+                "urlsImg":["./assets/images/white_pokeball.png","./assets/images/weapon_eau.png"]
+            },
+            {
+                "id":"2",
+                "position":null,
+                "name":"plante",
+                "damage":"30",
+                "urlsImg":["./assets/images/yellow_pokeball.png","./assets/images/weapon_plante.png"]
+            },
+            {
+                "id":"1",
+                "position":null,
+                "name":"électrique",
+                "damage":"40",
+                "urlsImg":["./assets/images/blue_pokeball.png","./assets/images/weapon_electrique.png"]
+            },
+            {
+                "id":"0",
+                "position":null,
+                "name":"feu",
+                "damage":"50",
+                "urlsImg":["./assets/images/pokeball2.png","img/weapon_feu.png"]
+            }
+        ],
+        "players":[
+            {
+                "name":null,
+                "position":null,
+                "hp":null,
+                "weaponId":null,
+                "urlsImg":["./assets/images/red_face.png","./assets/images/vicplayer0.png"]
+            },
+            {
+                "name":null,
+                "position":null,
+                "hp":null,
+                "weaponId":null,
+                "urlsImg":["./assets/images/regis_face.png","./assets/images/vicplayer1.png"]
+            }
+        ],
+        "fight_rules":[
+            "Règles du combat",
+            "Chaque joueur attaque chacun à son tour.",
+            "Les dégâts infligés dépendent de l’arme possédée par le joueur.",
+            "Le joueur peut choisir d’attaquer ou de se défendre contre le prochain coup.",
+            "Lorsque qu'un joueur se défend, il encaisse 50% de dégâts en moins qu’en temps normal.",
+            "Dès que les points de vie d’un joueur (initialement à 100) tombent à 0 , celui-ci a perdu."
+        ],
+        "board_rules":[
+            "Règles du jeu",
+            "Au lancement du jeu, chaque joueur possède une arme par défaut de puissance 10.",
+            "A chaque tour le joueur peut se déplacer d'une à trois cases.",
+            "Le joueur ne peut évidemment pas se déplacer à travers un joueur ou un obstacle.",
+            "Si un joueur passe sur une case contenant une arme,il laisse son arme et remplaçe par la nouvelle.",
+            "Si les 2 joueurs se croisent sur le cases adjacentes, un combat à mort se lance."
+        ]
+
+    }
+}

@@ -2,11 +2,11 @@ import $ from 'jquery'
 import { gameConfig } from './config'
 import { gameInfos } from './globals'
 import { Cell } from './cell'
+import { Player } from './player';
+import { Weapon } from './weapon';
 
 /**
  *Classe Grid qui génére le plateau et les obstacles via ses méthodes
- * @export
- * @class Grid
  */
 export class Grid {
     /**
@@ -14,13 +14,14 @@ export class Grid {
      *Une fonction build qui permet de construire le plateau
      *et une fonction createObstacle pour génerer les obstacles
      *Crée une instance de Grid
-     * @memberof Grid
      */
     constructor() {
         this.col = gameConfig.boardSize;
         this.row = gameConfig.boardSize;
         this.build(this.col,this.row);
         this.createObstacle(gameConfig.numberObstacles);
+        this.createWeapons(gameConfig.numberWeapons);
+        this.createPlayers(gameConfig.numberPlayers);
     }
     /**
      *Getter qui récupére un entier aléatoire compris entre 0 et le nombre de cases du plateau
@@ -30,7 +31,32 @@ export class Grid {
     get randomCellId(){
         return Math.floor(Math.random() * Math.floor(this.col * this.row));
     }
-    //Création du plateau
+    /**
+     *Getter qui récupère les id des cases qui se situent coté droit du plateau
+     *@readonly
+     *@memberof Grid
+     */
+    get rightCellsBorder(){
+        let rightCells = [];
+        for (let i = gameConfig.boardSize-1;i < (gameConfig.boardSize * gameConfig.boardSize) ;i+=gameConfig.boardSize){
+            rightCells.push(i);
+        }
+        return rightCells;
+    }
+    /**
+     *Getter qui récupère les id des cases qui se situent coté droit du gauche
+     *@readonly
+     *@memberof Grid
+     */
+    get leftCellsBorder(){
+        let leftCells = [];
+        for (let i = 0;i < (gameConfig.boardSize * gameConfig.boardSize);i+=gameConfig.boardSize){
+            leftCells.push(i);
+        }
+        return leftCells;
+    }
+
+
     /**
      *Méthode build qui créer le plateau avec numberCols et numberRows passés en paramètres
      * @param {*} numberCols (Nombre de colonnes)
@@ -38,41 +64,173 @@ export class Grid {
      * @memberof Grid
      */
     build(numberCols, numberRows) {
-        //On crée un élement table
-        let table = document.createElement('table');
-        //On lui ajouter une id board
+        const table = document.createElement('table');
         table.id = 'board';
-        // On boucle sur un tr pour créer une ligne
+        let k = -1;
         for (let i = 0; i < (numberRows); i++) {
             const tr = document.createElement('tr');
-            //On attache le tr à l'élement table
             $(table).append(tr);
-            //On boucle une nouvelle fois pour ajouter une colonne dans la ligne que l'on vient de créer
             for (let j = 0; j < (numberCols); j++) {
-                //On crée cette fois un élément td
-                const td = new Cell().build(i,j);
-                //On attache notre élément crée à la table
+                k += 1;
+                const td = new Cell().build(k);
                 $(tr).append(td);
             }
         }
-        // On attache notre tableau au body html
         $('body').append(table);
     }
     /**
-     *
-     * @param {*} numberObstacles
+     *Ajout les obstacles sur un ID aléatoire en les affichant via css et en stockant l'ID dans la variable dans
+     *les tableaux usedCellIndexes et obstaclesPositions
+     * @param {*} numberObstacles(Le nombre d'obstacles voulu est passé en paramètre)
      * @memberof Grid
      */
     createObstacle(numberObstacles) {
         let i = 1;
-        while(i <= numberObstacles && numberObstacles > 0){
+        while(i <= numberObstacles && numberObstacles > 0) {
             const randomId = this.randomCellId;
-            if(!gameInfos.obstaclesIndexes.includes(randomId)){
+            if(!gameInfos.usedCellIndexes.includes(randomId)) {
                 $('#'+randomId).addClass('obstacle-case');
-                gameInfos.obstaclesIndexes.push(randomId);
+                gameInfos.obstaclesPositions.push(randomId);
+                gameInfos.usedCellIndexes.push(randomId);
                 i++;
             }
         }
     }
+    /**
+     *Ajout des armes sur un ID aléatoire
+     * @param {*} numberWeapons (Le nombre d'armes voulu sur le plateau est passé en paramètre)
+     * @memberof Grid
+     */
+    createWeapons(numberWeapons) {
+        let i = 0;
+        while(i < numberWeapons) {
+            const randomId = this.randomCellId;
+            if(!gameInfos.usedCellIndexes.includes(randomId)) {
+                gameInfos.weapons.push(new Weapon(gameInfos.data.weapons[i].id,randomId,gameInfos.data.weapons[i].damage,gameInfos.data.weapons[i].urlsImg));
+                gameInfos.weaponsPositions.push(randomId);
+                gameInfos.usedCellIndexes.push(randomId);
+                i++;
+            }
+        }
+    }
+    /**
+     *Ajout des players sur un ID aléatoire
+     * @param {*} numberPlayers(Le nombre de joueurs est passé en paramètre)
+     * @memberof Grid
+     */
+    createPlayers(numberPlayers) {
+        let i = 0;
+        while(i < numberPlayers) {
+            const randomId = this.randomCellId;
+            if(!gameInfos.usedCellIndexes.includes(randomId) && !this.checkAround(randomId)){
+                gameInfos.players.push(new Player(i,'null',gameConfig.hpPlayers,gameConfig.defaultWeaponId,randomId,gameInfos.data.players[i].urlsImg));
+                gameInfos.usedCellIndexes.push(randomId);
+                gameInfos.playersPositions.push(randomId);
+                i++;
+            }
+        }
+        this.playRound();
+    }
+    /**
+     *Vérifie qu'il n'y a pas de joueur qui se situe sur les cases adjacentes
+     * @param {*} positionPlayer(la position du joueur sur lequel on effectue la recherche est passé en paramètre)
+     * @returns(retourne un booléen en fonction du résultat)
+     * @memberof Grid
+     */
+    checkAround(positionPlayer){
+        if(gameInfos.playersPositions.includes(positionPlayer+1)
+            || gameInfos.playersPositions.includes(positionPlayer-1)
+            || gameInfos.playersPositions.includes(positionPlayer+gameConfig.boardSize)
+            || gameInfos.playersPositions.includes(positionPlayer-gameConfig.boardSize)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    /**
+     *Met en surbrillance les cases accessibles à droite du joueur concerné
+     * @param {*} position(La position du joueur concerné est passé en paramètre)
+     * @memberof Grid
+     */
+    accessiblesRightCells(position){
+        for (let i = 1; i <= 3; i++){
+            if(!gameInfos.obstaclesPositions.includes((position + i)) && !gameInfos.playersPositions.includes((position + i))
+            && !this.leftCellsBorder.includes(position + i) ){
+                $('#'+(position + i)).addClass('highlighted-cell');
+            } else {
+                break;
+            }
+        }
+    }
+    /**
+     *Met en surbrillance les cases accessibles en bas du joueur concerné
+     * @param {*} position(La position du joueur concerné est passé en paramètre)
+     * @memberof Grid
+     */
+    accessiblesDownCells(position){
+        for (let i = gameConfig.boardSize; i <= 3*gameConfig.boardSize; i+=gameConfig.boardSize)
+        if(!gameInfos.obstaclesPositions.includes((position + i)) && !gameInfos.playersPositions.includes((position + i))){
+            $('#'+(position + i)).addClass('highlighted-cell');
+        } else {
+            break;
+        }
+    }
+    /**
+     *Met en surbrillance les cases accessibles à gauche du joueur concerné
+     * @param {*} position(La position du joueur concerné est passé en paramètre)
+     * @memberof Grid
+     */
+    accessiblesLeftCells(position){
+        for (let i = 1; i <= 3; i++){
+            if(!gameInfos.obstaclesPositions.includes((position - i)) && !gameInfos.playersPositions.includes((position - i))
+            && !this.rightCellsBorder.includes(position - i) ){
+                $('#'+(position - i)).addClass('highlighted-cell');
+            } else {
+                break;
+            }
+        }
+    }
+    /**
+     *Met en surbrillance les cases accessibles en haut du joueur concerné
+     * @param {*} position(La position du joueur concerné est passé en paramètre)
+     * @memberof Grid
+     */
+    accessiblesUpCells(position){
+        for (let i = gameConfig.boardSize; i <= 3*gameConfig.boardSize; i+=gameConfig.boardSize)
+        if(!gameInfos.obstaclesPositions.includes((position - i)) && !gameInfos.playersPositions.includes((position - i))){
+            $('#'+(position - i)).addClass('highlighted-cell');
+        } else {
+            break;
+        }
+    }
+    /**
+     *Lance un tour avec affichage des cases accessibles et lancement de la fonction de déplacement
+     * @memberof Grid
+     */
+    playRound(){
+        if(gameInfos.currentPlayer !== null){
+            const nextPlayer = this.switchPlayer();
+            gameInfos.currentPlayer = nextPlayer;
+            this.accessiblesRightCells(gameInfos.players[nextPlayer].position);
+            this.accessiblesDownCells(gameInfos.players[nextPlayer].position);
+            this.accessiblesLeftCells(gameInfos.players[nextPlayer].position);
+            this.accessiblesUpCells(gameInfos.players[nextPlayer].position);
+            gameInfos.players[nextPlayer].move();
+        }
+    }
+    /**
+     *Change l'ID du joueur dans la variable gameInfos.currentPlayer
+     * @returns(renvoi l'ID du joueur)
+     * @memberof Grid
+     */
+    switchPlayer(){
+        if(gameInfos.currentPlayer === 1)
+        {
+            gameInfos.currentPlayer = 0;
+            return gameInfos.currentPlayer;
+        } else {
+            gameInfos.currentPlayer = 1;
+            return gameInfos.currentPlayer;
+        }
+    }
 }
-

@@ -5,6 +5,11 @@
  * numberObstacles (Nombre d'obstacles à génerer)
  */
 export const gameConfig = {
-    boardSize: 10,
-    numberObstacles: 10
+    fileJson : 'https://api.myjson.com/bins/cl8d9',
+    boardSize: 3,
+    numberObstacles: 0,
+    numberPlayers: 2,
+    hpPlayers: 100,
+    numberWeapons: 4,
+    defaultWeaponId: 5
 }

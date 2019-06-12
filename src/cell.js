@@ -1,26 +1,23 @@
 /**
- *
- *
+ *Classe qui permet de générer les cases via constructeur
  * @export
  * @class Cell
  */
 export class Cell {
-    constructor(positionX,positionY){
-        this.positionX = positionX;
-        this.positionY = positionY;
-        this.build(this.positionX,this.positionY);
+    constructor(position){
+        this.position = position;
+        this.build(this.position);
     }
     /**
+     *Méthode qui permet de créer une cellule
      *
-     *
-     * @param {*} positionX
-     * @param {*} positionY
-     * @returns
+     * @param {*} position(l'id de la cellule est passé en paramètre)
+     * @returns(il retourne un élement html <td>)
      * @memberof Cell
      */
-    build(positionX,positionY){
+    build(position){
         const tdHtml = document.createElement('td');
-        tdHtml.id = parseInt(positionX+''+positionY);
-        return td;
+        tdHtml.id = position;
+        return tdHtml;
     }
 }
