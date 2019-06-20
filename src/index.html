@@ -1,13 +1,92 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
     <title>Jeu de plateau</title>
 </head>
-<body>
-    <div id="board"></div>
-</body>
-</html>
 
+<body>
+    <div id="gameboy">
+        <div id="led" class="led-off"></div>
+        <div id="power-text">POWER</div>
+        <div id="power-on"></div>
+        <div id="sound"></div>
+        <div id="nintendo"><span id="nintendo-text">Nintendo</span></div>
+        <div id="pad-horizontal"></div>
+        <div id="pad-vertical"></div>
+        <div id="a-button"></div>
+        <div id="b-button"></div>
+        <div id="select-button"></div>
+        <div id="start-button"></div>
+        <div id="encoche"></div>
+        <div class="message message-power"><img src="./assets/images/left_arrow.png">
+            <p>CLICK HERE TO POWER ON THE GAME</p>
+        </div>
+        <div class="message message-muted"><img src="./assets/images/right_arrow.png">
+            <p>CLICK HERE TO MUTE SOUND</p>
+        </div>
+        <div class="background-black">
+            <div id="buttons" class="display-none">
+                <div class="button-attack">ATTACK</div>
+                <div class="button-defense">DEFEND</div>
+            </div>
+            <div id="console" class="background-color-console">
+                <p>WELCOME INTO THE GAME</p>
+            </div>
+            <div id="board"></div>
+            <!--<div id="intro" class="intro-off"></div>
+            <div id="player-names">
+                <label class="label-text-intro" for="player0">Enter name player 1 :</label>
+                <div id="input-player0">
+                    <input class="input-text-intro input-text-intro-ok" type="text" id="player0" autofocus
+                        required="required" minlength="3" maxlength="9"><br />
+                </div>
+                <div class="player-names-error-message-player player-names-error-message-player0"></div>
+                <div id="input-player1">
+                    <label class="label-text-intro" for="player1">Enter name player 2 :</label>
+                    <input class="input-text-intro input-text-intro-ok" type="text" id="player1" required="required"
+                        minlength="3" maxlength="9">
+                    <div class="player-names-error-message-player player-names-error-message-player1"></div>
+                    <div id="enter" class="blink-animation">PRESS ENTER</div>
+                </div>
+            </div>-->
+            <div id="scoreboard">
+                <div class="scoreboard--player scoreboard--player0">
+                    <p>Player 1 <p><span class="scoreboard--name--player0"></span></p>
+                        <p class="scoreboard--img--player scoreboard--img--player0"></p>
+                        <p class="scoreboard--weapon--img--player scoreboard--weapon--img--player0"></p>
+                        <p class="scoreboard--weapon--img2--player scoreboard--weapon--img2--player0"></p>
+                        <p>HP <span class="scoreboard--hp--player scoreboard--hp--player0"></span> </p>
+                        <p class="scoreboard--hp-bar--player scoreboard--hp-bar--player0"></p>
+                        <p>Pokemon <span class="scoreboard--weapon--name--player scoreboard--weapon--name--player0"></span></p>
+                        <p>Damages <span class="scoreboard--weapon--damages--player scoreboard--weapon--damages--player0"></span>
+                        </p>
+                </div>
+                <div class="scoreboard--player scoreboard--player1">
+                    <p>Player 2</p> <span class="scoreboard--name--player1"></span></p>
+                    <p class="scoreboard--img--player scoreboard--img--player1"></p>
+                    <p class="scoreboard--weapon--img--player scoreboard--weapon--img--player1"></p>
+                    <p class="scoreboard--weapon--img2--player scoreboard--weapon--img2--player1"></p>
+                    <p>HP <span class="scoreboard--hp--player scoreboard--hp--player1"></span> </p>
+                    <p class="scoreboard--hp-bar--player scoreboard--hp-bar--player1"></p>
+                    <p>Pokemon <span class="scoreboard--weapon--name--player scoreboard--weapon--name--player1"></span></p>
+                    <p>Damages <span class="scoreboard--weapon--damages--player scoreboard--weapon--damages--player1"></span></p>
+                </div>
+            </div>
+        </div>
+        <div class="background-modal">
+            <div class="background-modal-content">
+                <span class="background-modal-content-close" title="Fermer la fenêtre">&times;</span>
+                <span class="background-modal-content-text">
+                    <div class="victory"></div>
+                </span>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

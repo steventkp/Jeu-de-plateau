@@ -7,7 +7,7 @@ import { Grid } from './grid';
  * La réponse de la promise est retournée dans une variable gameInfos.data
  * et découpée dans plusieurs catégories
  */
-const getDataJson = ()=>{
+const getDataJson = () => {
 services.getData(gameConfig.fileJson)
 	.then(function (data) {
 		gameInfos.data.weapons = data.game.weapons;
@@ -20,8 +20,8 @@ services.getData(gameConfig.fileJson)
 		const msg = ['Une erreur s\'est produite lors de la récupération des données ...', 'Veuillez nous excuser pour la gêne occasionnée et revenir ultérieurement.', 'Si le problème persite merci de bien vouloir contacter l\'administrateur du site.'];
 	})
 }
-const jsonDone = ()=>{
-	gameInfos.board = new Grid;
+const jsonDone = () => {
+	gameInfos.board = new Grid();
 }
 $(function () {
 	getDataJson();

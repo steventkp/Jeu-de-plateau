@@ -1,0 +1,30 @@
+.weapon-size {
+    background-size: 30%;
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 32px;
+    width: 32px;
+    position: relative;
+    z-index: 10;
+}
+
+.pokeball0{
+    @extend .weapon-size;
+    background-image: url('../images/blue_pokeball.png');
+}
+.pokeball1{
+    @extend .weapon-size;
+    background-image: url('../images/violet_pokeball.png');
+}
+.pokeball2{
+    @extend .weapon-size;
+    background-image: url('../images/white_pokeball.png');
+}
+.pokeball3{
+    @extend .weapon-size;
+    background-image: url('../images/yellow_pokeball.png');
+}
+.pokeball-default{
+    @extend .weapon-size;
+    background-image: url('../images/red_pokeball.png');
+}

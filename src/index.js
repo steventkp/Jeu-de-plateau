@@ -4,4 +4,4 @@ if (process.env.NODE_ENV === 'development') {
 }
 require('../src/assets/stylesheets/styles.scss');
 
-import './main.js';
+import './main';

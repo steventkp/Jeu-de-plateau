@@ -6,7 +6,6 @@ const devMode = process.env.NODE_ENV !== 'production';
 
 module.exports = {
     entry: ['./src/index.js'],
-    
     output: {
         filename: 'bundle.js',
         path: path.resolve(__dirname, './public')
@@ -67,6 +66,10 @@ module.exports = {
                         outputPath: 'img/'
                     }
                 }
+            },
+            {
+                test: /\.(ogg|mp3|wav)$/i,
+                loader: 'url-loader'
             },
             {
                 test: /\.js$/,

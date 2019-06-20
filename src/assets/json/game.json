@@ -2,47 +2,46 @@
     "game":{
         "weapons":[
             {
-                "id":"5",
-                "position":null,
-                "name":"normal",
-                "damage":"10",
-                "urlsImg":["./assets/images/red_pokeball.png","./assets/images/weapon_normal.png"]
-            },
-            {
-                "id":"4",
-                "position":null,
-                "name":"normal",
-                "damage":"10",
-                "urlsImg":["./assets/images/violet_pokeball.png","./assets/images/weapon_normal.png"]
-            },
-            {
-                "id":"3",
+                "id":0,
                 "position":null,
                 "name":"eau",
-                "damage":"20",
-                "urlsImg":["./assets/images/white_pokeball.png","./assets/images/weapon_eau.png"]
+                "damage":20,
+                "classImg":"pokeball0"
             },
             {
-                "id":"2",
+                "id":1,
                 "position":null,
                 "name":"plante",
-                "damage":"30",
-                "urlsImg":["./assets/images/yellow_pokeball.png","./assets/images/weapon_plante.png"]
+                "damage":30,
+                "classImg":"pokeball1"
             },
             {
-                "id":"1",
+                "id":2,
                 "position":null,
                 "name":"électrique",
-                "damage":"40",
-                "urlsImg":["./assets/images/blue_pokeball.png","./assets/images/weapon_electrique.png"]
+                "damage":40,
+                "classImg":"pokeball2"
             },
             {
-                "id":"0",
+                "id":3,
                 "position":null,
                 "name":"feu",
-                "damage":"50",
-                "urlsImg":["./assets/images/pokeball2.png","img/weapon_feu.png"]
-            }
+                "damage":50,
+                "classImg":"pokeball3"
+            },
+            {
+                "id":4,
+                "position":null,
+                "name":"normal",
+                "damage":10,
+                "classImg":"pokeball-default"
+            },
+            {
+                "id":5,
+                "position":null,
+                "name":"normal",
+                "damage":10,
+                "classImg":"pokeball-default"            }
         ],
         "players":[
             {
@@ -50,14 +49,14 @@
                 "position":null,
                 "hp":null,
                 "weaponId":null,
-                "urlsImg":["./assets/images/red_face.png","./assets/images/vicplayer0.png"]
+                "classImg":"player0"
             },
             {
                 "name":null,
                 "position":null,
                 "hp":null,
                 "weaponId":null,
-                "urlsImg":["./assets/images/regis_face.png","./assets/images/vicplayer1.png"]
+                "classImg":"player1"
             }
         ],
         "fight_rules":[

@@ -4,6 +4,7 @@ import { gameInfos } from './globals'
 import { Cell } from './cell'
 import { Player } from './player';
 import { Weapon } from './weapon';
+import { Scoreboard } from './scoreboard';
 
 /**
  *Classe Grid qui génére le plateau et les obstacles via ses méthodes
@@ -56,7 +57,6 @@ export class Grid {
         return leftCells;
     }
 
-
     /**
      *Méthode build qui créer le plateau avec numberCols et numberRows passés en paramètres
      * @param {*} numberCols (Nombre de colonnes)
@@ -65,7 +65,7 @@ export class Grid {
      */
     build(numberCols, numberRows) {
         const table = document.createElement('table');
-        table.id = 'board';
+        table.id = 'game';
         let k = -1;
         for (let i = 0; i < (numberRows); i++) {
             const tr = document.createElement('tr');
@@ -76,7 +76,9 @@ export class Grid {
                 $(tr).append(td);
             }
         }
-        $('body').append(table);
+        $('#board').append(table);
+        gameInfos.boardgameLimitsLeftSide = this.leftCellsBorder;
+        gameInfos.boardgameLimitsRightSide = this.rightCellsBorder;
     }
     /**
      *Ajout les obstacles sur un ID aléatoire en les affichant via css et en stockant l'ID dans la variable dans
@@ -106,7 +108,7 @@ export class Grid {
         while(i < numberWeapons) {
             const randomId = this.randomCellId;
             if(!gameInfos.usedCellIndexes.includes(randomId)) {
-                gameInfos.weapons.push(new Weapon(gameInfos.data.weapons[i].id,randomId,gameInfos.data.weapons[i].damage,gameInfos.data.weapons[i].urlsImg));
+                gameInfos.weapons.push(new Weapon(gameInfos.data.weapons[i].id,randomId,gameInfos.data.weapons[i].damage,'pokeball'+i));
                 gameInfos.weaponsPositions.push(randomId);
                 gameInfos.usedCellIndexes.push(randomId);
                 i++;
@@ -123,9 +125,10 @@ export class Grid {
         while(i < numberPlayers) {
             const randomId = this.randomCellId;
             if(!gameInfos.usedCellIndexes.includes(randomId) && !this.checkAround(randomId)){
-                gameInfos.players.push(new Player(i,'null',gameConfig.hpPlayers,gameConfig.defaultWeaponId,randomId,gameInfos.data.players[i].urlsImg));
+                gameInfos.players.push(new Player(i,'null',gameConfig.hpPlayers,gameConfig.defaultWeaponId+i,randomId,'player'+i));
                 gameInfos.usedCellIndexes.push(randomId);
                 gameInfos.playersPositions.push(randomId);
+                gameInfos.scoreboards.push(new Scoreboard('hello'+i,i,gameInfos.players[i].classImg,gameConfig.hpPlayers,gameConfig.defaultWeaponDamages,gameConfig.defaultWeaponClassCss));
                 i++;
             }
         }
@@ -156,7 +159,7 @@ export class Grid {
         for (let i = 1; i <= 3; i++){
             if(!gameInfos.obstaclesPositions.includes((position + i)) && !gameInfos.playersPositions.includes((position + i))
             && !this.leftCellsBorder.includes(position + i) ){
-                $('#'+(position + i)).addClass('highlighted-cell');
+                $(`#${position + i}`).addClass('highlighted-cell');
             } else {
                 break;
             }
@@ -170,7 +173,7 @@ export class Grid {
     accessiblesDownCells(position){
         for (let i = gameConfig.boardSize; i <= 3*gameConfig.boardSize; i+=gameConfig.boardSize)
         if(!gameInfos.obstaclesPositions.includes((position + i)) && !gameInfos.playersPositions.includes((position + i))){
-            $('#'+(position + i)).addClass('highlighted-cell');
+            $(`#${position + i}`).addClass('highlighted-cell');
         } else {
             break;
         }
@@ -184,7 +187,7 @@ export class Grid {
         for (let i = 1; i <= 3; i++){
             if(!gameInfos.obstaclesPositions.includes((position - i)) && !gameInfos.playersPositions.includes((position - i))
             && !this.rightCellsBorder.includes(position - i) ){
-                $('#'+(position - i)).addClass('highlighted-cell');
+                $(`#${position - i}`).addClass('highlighted-cell');
             } else {
                 break;
             }
@@ -198,11 +201,12 @@ export class Grid {
     accessiblesUpCells(position){
         for (let i = gameConfig.boardSize; i <= 3*gameConfig.boardSize; i+=gameConfig.boardSize)
         if(!gameInfos.obstaclesPositions.includes((position - i)) && !gameInfos.playersPositions.includes((position - i))){
-            $('#'+(position - i)).addClass('highlighted-cell');
+            $(`#${position - i}`).addClass('highlighted-cell');
         } else {
             break;
         }
     }
+
     /**
      *Lance un tour avec affichage des cases accessibles et lancement de la fonction de déplacement
      * @memberof Grid
@@ -215,22 +219,33 @@ export class Grid {
             this.accessiblesDownCells(gameInfos.players[nextPlayer].position);
             this.accessiblesLeftCells(gameInfos.players[nextPlayer].position);
             this.accessiblesUpCells(gameInfos.players[nextPlayer].position);
+            gameInfos.scoreboards[gameInfos.currentPlayer].addCurrentPlayerScoreboard();
             gameInfos.players[nextPlayer].move();
         }
     }
     /**
      *Change l'ID du joueur dans la variable gameInfos.currentPlayer
-     * @returns(renvoi l'ID du joueur)
+     * @returns (renvoi l'ID du joueur)
      * @memberof Grid
      */
     switchPlayer(){
-        if(gameInfos.currentPlayer === 1)
-        {
-            gameInfos.currentPlayer = 0;
-            return gameInfos.currentPlayer;
-        } else {
-            gameInfos.currentPlayer = 1;
-            return gameInfos.currentPlayer;
-        }
+        gameInfos.currentPlayer = gameInfos.currentPlayer === 1 ? 0 : 1;
+        return gameInfos.currentPlayer;
+    }
+    /**
+     *Fonction qui lance l'animation d'un vortex
+     * @memberof Grid
+     */
+    vortexAnimation(){
+    $('#board').addClass('rotate');
+        setTimeout(() => {
+            $('.obstacle-case').addClass('visibility-hidden');
+        }, 1000);
+        setTimeout(() => {
+            $('.weapon').addClass('visibility-hidden');
+        }, 2000);
+        setTimeout(() => {
+            $("#board *").css("border","1px solid rgba(0, 0, 0, 0.0)");
+        }, 2500);
     }
 }

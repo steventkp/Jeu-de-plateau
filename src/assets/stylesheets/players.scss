@@ -1,0 +1,23 @@
+.player-size{
+    background-size: 35%;
+    background-repeat: no-repeat;
+    background-position:center;
+    position: relative;
+    z-index: 20;
+}
+
+.player0{
+    @extend .player-size;
+    background-image: url('../images/red_face.png');
+}
+.player1{
+    @extend .player-size;
+    background-image: url('../images/rival_face.png');
+}
+
+.victory-player0{
+    background-image: url('../images/red_player_victory.png');
+}
+.victory-player1{
+    background-image: url('../images/rival_player_victory.png');
+}
