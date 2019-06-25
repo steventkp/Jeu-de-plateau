@@ -7,7 +7,6 @@
     position: relative;
     z-index: 10;
 }
-
 .pokeball0{
     @extend .weapon-size;
     background-image: url('../images/blue_pokeball.png');

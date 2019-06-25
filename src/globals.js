@@ -14,11 +14,15 @@ export const gameInfos = {
     weapons:[],
     players:[],
     scoreboards:[],
-    rulesBoard:[],
-    rulesFight:[],
-    currentPlayer:0
+    beginFight:false,
+    currentPlayer:0,
+    rivalPlayer:null,
+    nextRound:null,
+    previousRound:null,
 }
-
+/**
+ * Liste des sons du jeu
+ */
 export const gameSounds = {
     //Tous les fichiers audio utilisés dans le jeu
     battle: new Audio(require('./assets/audio/battle.mp3')),

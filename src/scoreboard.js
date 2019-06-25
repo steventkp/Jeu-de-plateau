@@ -64,5 +64,23 @@ export class Scoreboard {
     removeCurrentPlayerScoreboard(){
         $('.scoreboard--player'+this.playerId).removeClass('scoreboard--highlighted');
     }
+    /**
+     *Met à jour les points de vie du joueur et la barre de hp
+     * @param {*} hp
+     * @memberof Scoreboard
+     */
+    updateHp(hp){
+        $('.scoreboard--hp--player'+this.playerId).html(hp);
+        $('.scoreboard--hp-bar--player'+this.playerId).width(hp+'%');
+    }
+    /**
+     *Ajoute le nom du joueur passé en paramètre sur le tableau des scores
+     * @param {*} playerId
+     * @param {*} playerName
+     * @memberof Scoreboard
+     */
+    addPlayerName(playerId,playerName){
+        $('.scoreboard--name--player' + playerId).html(playerName);
+    }
 }
 

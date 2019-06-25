@@ -41,7 +41,8 @@
                 "position":null,
                 "name":"normal",
                 "damage":10,
-                "classImg":"pokeball-default"            }
+                "classImg":"pokeball-default"
+            }
         ],
         "players":[
             {
@@ -75,6 +76,5 @@
             "Si un joueur passe sur une case contenant une arme,il laisse son arme et remplaçe par la nouvelle.",
             "Si les 2 joueurs se croisent sur le cases adjacentes, un combat à mort se lance."
         ]
-
     }
 }

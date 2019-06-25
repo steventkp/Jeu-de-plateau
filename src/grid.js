@@ -125,10 +125,10 @@ export class Grid {
         while(i < numberPlayers) {
             const randomId = this.randomCellId;
             if(!gameInfos.usedCellIndexes.includes(randomId) && !this.checkAround(randomId)){
-                gameInfos.players.push(new Player(i,'null',gameConfig.hpPlayers,gameConfig.defaultWeaponId+i,randomId,'player'+i));
+                gameInfos.players.push(new Player(i,'Pseudo'+i,gameConfig.hpPlayers,gameConfig.defaultWeaponId+i,randomId,'player'+i));
                 gameInfos.usedCellIndexes.push(randomId);
                 gameInfos.playersPositions.push(randomId);
-                gameInfos.scoreboards.push(new Scoreboard('hello'+i,i,gameInfos.players[i].classImg,gameConfig.hpPlayers,gameConfig.defaultWeaponDamages,gameConfig.defaultWeaponClassCss));
+                gameInfos.scoreboards.push(new Scoreboard(gameInfos.players[i].name,i,gameInfos.players[i].classImg,gameConfig.hpPlayers,gameConfig.defaultWeaponDamages,gameConfig.defaultWeaponClassCss));
                 i++;
             }
         }
@@ -212,15 +212,14 @@ export class Grid {
      * @memberof Grid
      */
     playRound(){
-        if(gameInfos.currentPlayer !== null){
-            const nextPlayer = this.switchPlayer();
-            gameInfos.currentPlayer = nextPlayer;
-            this.accessiblesRightCells(gameInfos.players[nextPlayer].position);
-            this.accessiblesDownCells(gameInfos.players[nextPlayer].position);
-            this.accessiblesLeftCells(gameInfos.players[nextPlayer].position);
-            this.accessiblesUpCells(gameInfos.players[nextPlayer].position);
+        if(gameInfos.beginFight !== true){
+            gameInfos.currentPlayer = this.switchPlayer();
+            this.accessiblesRightCells(gameInfos.players[gameInfos.currentPlayer].position);
+            this.accessiblesDownCells(gameInfos.players[gameInfos.currentPlayer].position);
+            this.accessiblesLeftCells(gameInfos.players[gameInfos.currentPlayer].position);
+            this.accessiblesUpCells(gameInfos.players[gameInfos.currentPlayer].position);
             gameInfos.scoreboards[gameInfos.currentPlayer].addCurrentPlayerScoreboard();
-            gameInfos.players[nextPlayer].move();
+            gameInfos.players[gameInfos.currentPlayer].move();
         }
     }
     /**
@@ -247,5 +246,17 @@ export class Grid {
         setTimeout(() => {
             $("#board *").css("border","1px solid rgba(0, 0, 0, 0.0)");
         }, 2500);
+        setTimeout(() => {
+            $('#fight-buttons').css('visibility','visible');
+        },3500);
+    }
+    /**
+     *Permet d'afficher un message dans la console du jeu
+     * @param {*} message
+     * @memberof Grid
+     */
+    messageUpdate(message){
+        $('#console').html('<p>' + message + '</p>');
+        $('#console').toggleClass('background-color-console background-color-console-toggle');
     }
 }

@@ -10,7 +10,7 @@ export const services = {
             $.get(url, (dataPromise) => {
                 dataPromise ? resolve(dataPromise) : reject(err);
             }).fail(function () {
-                console.log('Erreur dans la récuperation des données ! '+err);
+                console.log('Erreur dans la récuperation des données ! ');
             })
         });
         return thisData;

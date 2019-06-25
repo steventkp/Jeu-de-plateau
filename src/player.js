@@ -1,6 +1,9 @@
 import $ from 'jquery'
 import { Weapon } from './weapon';
 import { gameConfig } from './config';
+import { gameInfos, gameSounds } from './globals';
+import { displayModalText,closeModalText} from './gameboy';
+
 /**
  *La classe Player permet de créer un joueur via son constructeur et d'éxécuter ses méthodes
  * @export
@@ -46,7 +49,7 @@ export class Player {
      * @memberof Player
      */
     createDefaultWeaponPlayer(){
-        gameInfos.weapons.push(new Weapon((gameInfos.weapons.length-1)+1,null,gameInfos.defaultWeaponDamages,'pokeball-default'));
+        gameInfos.weapons.push(new Weapon((gameInfos.weapons.length-1)+1,null,gameConfig.defaultWeaponDamages,'pokeball-default'));
     }
     move(){
         this.idHighlightedCells;
@@ -76,6 +79,7 @@ export class Player {
                 gameInfos.tempHighlightedCases.length = 0;
                 //On lance un nouveau round
                 gameInfos.board.playRound();
+                console.log(gameInfos.players)
             });
         }
     }
@@ -120,13 +124,9 @@ export class Player {
         gameInfos.players[gameInfos.currentPlayer].weaponId = cellW;
         this.updatePositionWeapon(currentW,position);
         this.updatePositionWeapon(cellW,null);
-        //console.log(gameInfos.weapons[currentW])
-        gameInfos.weapons[cellW].remove(gameInfos.weapons[cellW].classImg,position)
-        //console.log(gameInfos.weapons[cellW].remove(th))
-        gameInfos.weapons[currentW].create(gameInfos.weapons[currentW].classImg,position)
-
+        gameInfos.weapons[cellW].remove(gameInfos.weapons[cellW].classImg,position);
+        gameInfos.weapons[currentW].create(gameInfos.weapons[currentW].classImg,position);
         gameInfos.scoreboards[gameInfos.currentPlayer].updateWeapon(gameInfos.currentPlayer,gameInfos.weapons[currentW].classImg,gameInfos.weapons[cellW].classImg,gameInfos.weapons[cellW].damage);
-
     }
     /**
      *Recherche l'index d'une arme avec l'ID de sa position sur le plateau
@@ -160,20 +160,19 @@ export class Player {
      * @memberof Player
      */
     checkingFight(playerPostition){
-        console.log(playerPostition);
         if(gameInfos.boardgameLimitsLeftSide.includes(playerPostition)){
             if(this.checkPlayerRight(playerPostition)){
-                console.log('ATTACK !!! RIGHT !!!')
+                gameInfos.beginFight = true;
                 this.meetingPlayer();
             }
         } else if(gameInfos.boardgameLimitsRightSide.includes(playerPostition)){
             if(this.checkPlayerLeft(playerPostition)){
-                console.log('ATTACK !!! LEFT !!!')
+                gameInfos.beginFight = true;
                 this.meetingPlayer();
             }
         } else {
             if(gameInfos.board.checkAround(playerPostition)){
-                console.log('FIIIGHHHT !!! ');
+                gameInfos.beginFight = true;
                 this.meetingPlayer();
             };
         }
@@ -208,8 +207,149 @@ export class Player {
             return false;
         }
     }
+    /**
+     *Affichage d'une modale lors d'une rencontre avec un joueur
+     * @memberof Player
+     */
     meetingPlayer(){
-        //gameSounds.meet.play();
-        gameInfos.board.vortexAnimation();
+        gameInfos.players[gameInfos.currentPlayer].removeHighlightedCells();
+        gameInfos.scoreboards[gameInfos.currentPlayer].removeCurrentPlayerScoreboard();
+        gameInfos.tempHighlightedCases.length = 0;
+        setTimeout(() => {
+            //Affichage d'une modal
+            displayModalText(gameInfos.data.rulesFight);
+            gameSounds.ambiance.pause();
+            gameSounds.meet.play();
+            gameSounds.meet.loop = true;
+            window.onclick = (event) => {
+                if (event.target.className !== 'background-modal-content' && event.target.className !== 'background-modal-content-text') {
+                    closeModalText();
+                    event.stopPropagation();
+                    window.onclick = null;
+                    gameSounds.meet.pause();
+                    gameSounds.battle.play();
+                    gameInfos.board.vortexAnimation();
+                    gameInfos.players[gameInfos.currentPlayer].fightInit();
+                }
+            }
+              $('.background-modal-content-close').off('click').one("click",() => {
+                    closeModalText();
+                    gameInfos.board.vortexAnimation();
+                    gameInfos.players[gameInfos.currentPlayer].fightInit();
+                    gameSounds.meet.pause();
+                    gameSounds.battle.play();
+              })
+        }, 1000);
+    }
+    /**
+     *Initialisation du combat, choix du joueur et joueur adverse
+     * @memberof Player
+     */
+    fightInit(){
+        gameInfos.currentPlayer = gameInfos.board.switchPlayer();
+        setTimeout(() => {
+            $('.scoreboard--player'+gameInfos.currentPlayer).addClass('scoreboard--highlighted');
+        }, 200);
+        gameInfos.currentPlayer === 1 ? gameInfos.rivalPlayer = 0 : gameInfos.rivalPlayer = 1;
+        console.log('ID player rival',gameInfos.rivalPlayer);
+        gameInfos.board.messageUpdate(gameInfos.players[gameInfos.currentPlayer].name+' c\'est à ton tour de jouer');
+        this.choiceFightAction();
+    }
+    /**
+     *Choix de l'action du joueur attaquer ou défendre
+     * @memberof Player
+     */
+    choiceFightAction(){
+        $(".button-attack").off('click').one('click', () => {
+            setTimeout(() => {
+                gameInfos.nextRound = 'attack';
+                console.log('ID player rival',gameInfos.rivalPlayer);
+                this.attack(gameInfos.players[gameInfos.currentPlayer].weaponId,gameInfos.rivalPlayer)
+            }, 500);
+        });
+        $(".button-defense").off('click').one('click', () => {
+            setTimeout(() => {
+                gameInfos.nextRound = 'defend';
+                this.defense();
+            }, 500);
+        });
+    }
+    /**
+     *Fonction qui permet de rechercher la puissance d'une arme via son ID
+     * @param {*} weaponId //(ID de l'arme)
+     * @returns // Retourne la puissance de l'arme
+     * @memberof Player
+     */
+    searchDamagesWeapon(weaponId){
+        for (let value of gameInfos.weapons){
+            if(value.id === weaponId){
+                return value.damage;
+            }
+        }
+    }
+    /**
+     *Fonction qui permet d'attaquer l'adversaire
+     * @param {*} weaponId //ID de l'arme
+     * @param {*} rivalPlayerId //ID de l'adversaire
+     * @memberof Player
+     */
+    attack(weaponId,rivalPlayerId){
+        const damageWeapon = this.searchDamagesWeapon(weaponId);
+        if (gameInfos.nextRound === 'attack' && gameInfos.previousRound === 'defend' && (gameInfos.players[rivalPlayerId].hp - (damageWeapon / 2) > 0)){
+            gameInfos.previousRound = null;
+            gameInfos.nextRound = null;
+            const hp = gameInfos.players[rivalPlayerId].hp - (damageWeapon / 2);
+            setTimeout(() => {
+                gameInfos.players[gameInfos.rivalPlayer].hp = hp;
+                gameInfos.scoreboards[gameInfos.rivalPlayer].updateHp(hp);
+                gameInfos.scoreboards[gameInfos.currentPlayer].removeCurrentPlayerScoreboard();
+                gameInfos.players[gameInfos.currentPlayer].fightInit();
+                gameSounds.attack.play();
+            }, 250);
+
+        //Lorsque l'utilisateur clique sur attack sachant que l'adversaire avait cliqué précédemment sur attack
+        } else if (gameInfos.nextRound === 'attack' && gameInfos.players[rivalPlayerId].hp - damageWeapon > 0) {
+            gameInfos.previousRound = null;
+            gameInfos.nextRound = null;
+            const hp = gameInfos.players[rivalPlayerId].hp - damageWeapon;
+            gameInfos.players[gameInfos.rivalPlayer].hp = hp;
+            gameInfos.scoreboards[gameInfos.rivalPlayer].updateHp(hp);
+            console.log('ID player rival',gameInfos.rivalPlayer);
+            console.log('Points de vie du rival',gameInfos.players[gameInfos.rivalPlayer].hp)
+            gameInfos.scoreboards[gameInfos.currentPlayer].removeCurrentPlayerScoreboard();
+            gameInfos.players[gameInfos.currentPlayer].fightInit();
+            gameSounds.attack.play();
+        } else {
+            gameInfos.scoreboards[gameInfos.rivalPlayer].updateHp(0);
+            gameSounds.defeat.play();
+            gameSounds.battle.pause();
+            gameSounds.victory.play();
+            setTimeout(() => {
+                gameInfos.board.messageUpdate(gameInfos.players[gameInfos.rivalPlayer].name+' n\'a plus de points de vie, '+ gameInfos.players[gameInfos.currentPlayer].name + ' remporte la victoire !');
+            }, 1000);
+            $('.background-modal-content-close').hide();
+            $('.background-modal').fadeIn();
+            $('#buttons').toggleClass('display-none inline-block');
+            $('.background-modal-content-text').append(
+            '<p class="victory-text">'+gameInfos.players[gameInfos.currentPlayer].name+' IS THE WINNER! '+
+            '<br><p class="blink-animation size-victory-replay-text">PRESS ENTER TO OFF THE GAME AND START AGAIN</p>');
+            $(document).on('keypress',(e) => {
+                if(e.which == 13){
+                    location.reload()
+                }
+            });
+
+        }
+    }
+    /**
+     *Fonction qui permet au joueur de se défendre contre une future attaque
+     * @memberof Player
+     */
+    defense(){
+        gameInfos.board.messageUpdate(gameInfos.players[gameInfos.currentPlayer].name+' a décider de se défendre contre la prochaine attaque !');
+        gameInfos.nextRound = null;
+        gameInfos.previousRound = 'defend';
+        gameInfos.scoreboards[gameInfos.currentPlayer].removeCurrentPlayerScoreboard();
+        gameInfos.players[gameInfos.currentPlayer].fightInit();
     }
 }
