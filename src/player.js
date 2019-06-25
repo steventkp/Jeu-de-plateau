@@ -79,7 +79,6 @@ export class Player {
                 gameInfos.tempHighlightedCases.length = 0;
                 //On lance un nouveau round
                 gameInfos.board.playRound();
-                console.log(gameInfos.players)
             });
         }
     }
@@ -251,7 +250,6 @@ export class Player {
             $('.scoreboard--player'+gameInfos.currentPlayer).addClass('scoreboard--highlighted');
         }, 200);
         gameInfos.currentPlayer === 1 ? gameInfos.rivalPlayer = 0 : gameInfos.rivalPlayer = 1;
-        console.log('ID player rival',gameInfos.rivalPlayer);
         gameInfos.board.messageUpdate(gameInfos.players[gameInfos.currentPlayer].name+' c\'est à ton tour de jouer');
         this.choiceFightAction();
     }
@@ -263,7 +261,6 @@ export class Player {
         $(".button-attack").off('click').one('click', () => {
             setTimeout(() => {
                 gameInfos.nextRound = 'attack';
-                console.log('ID player rival',gameInfos.rivalPlayer);
                 this.attack(gameInfos.players[gameInfos.currentPlayer].weaponId,gameInfos.rivalPlayer)
             }, 500);
         });
@@ -314,8 +311,6 @@ export class Player {
             const hp = gameInfos.players[rivalPlayerId].hp - damageWeapon;
             gameInfos.players[gameInfos.rivalPlayer].hp = hp;
             gameInfos.scoreboards[gameInfos.rivalPlayer].updateHp(hp);
-            console.log('ID player rival',gameInfos.rivalPlayer);
-            console.log('Points de vie du rival',gameInfos.players[gameInfos.rivalPlayer].hp)
             gameInfos.scoreboards[gameInfos.currentPlayer].removeCurrentPlayerScoreboard();
             gameInfos.players[gameInfos.currentPlayer].fightInit();
             gameSounds.attack.play();
