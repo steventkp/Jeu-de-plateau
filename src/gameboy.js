@@ -19,7 +19,7 @@ export const powerOn = () => {
             gameSounds.intro.loop = true;
         }, 1000);
         $('.message').css('visibility','hidden');
-        checkForm();
+        submitInputs();
         //Lancement d'un écouteur d'évènement pour éteindre la gameboy
         powerOff();
     })
@@ -41,28 +41,35 @@ export const powerOff = () => {
  */
 
 const checkForm = () => {
+    const
+    valuePlayer0 = checkEachInputForm($('#player0').val(),'#player0','.player-names-error-message-player0'),
+    valuePlayer1 = checkEachInputForm($('#player1').val(),'#player1','.player-names-error-message-player1');
+    if(valuePlayer0 && valuePlayer1){
+        const
+        player0 = $('#player0').val(),
+        player1 = $('#player1').val();
+        gameInfos.players[0].name = player0;
+        gameInfos.players[1].name = player1;
+        gameInfos.scoreboards[0].addPlayerName(0,player0);
+        gameInfos.scoreboards[1].addPlayerName(1,player1);
+        gameSounds.intro.pause();
+        gameSounds.ambiance.play();
+        gameSounds.ambiance.loop = true;
+        displayGame();
+        $(document).unbind('keypress');
+    }
+}
+const submitInputs = () => {
     $(document).on('keypress',(e) =>{
         if(e.which == 13) {
-            const
-            valuePlayer0 = checkEachInputForm($('#player0').val(),'#player0','.player-names-error-message-player0'),
-            valuePlayer1 = checkEachInputForm($('#player1').val(),'#player1','.player-names-error-message-player1');
-            if(valuePlayer0 && valuePlayer1){
-                const
-                player0 = $('#player0').val(),
-                player1 = $('#player1').val();
-                gameInfos.players[0].name = player0;
-                gameInfos.players[1].name = player1;
-                gameInfos.scoreboards[0].addPlayerName(0,player0);
-                gameInfos.scoreboards[1].addPlayerName(1,player1);
-                gameSounds.intro.pause();
-                gameSounds.ambiance.play();
-                gameSounds.ambiance.loop = true;
-                displayGame();
-                $(document).unbind('keypress');
-            }
+            checkForm();
         }
     });
+    $('#enter').off('click').on('click',() => {
+        checkForm();
+    });
 }
+
 /**
  * Fonction qui contrôle les données entrées dans le formulaire
  */
@@ -126,3 +133,26 @@ export const closeModalText = () => {
     $('.background-modal-content').slideDown();
     $('.background-modal-content-text').html('');
 }
+/**
+ * Gestion de la mise en sourdine
+ */
+const muteControl = () => {
+    $('#sound').off('click').on('click', () => {
+        gameSounds.battle.muted = !gameSounds.battle.muted;
+        gameSounds.meet.muted = !gameSounds.meet.muted;
+        gameSounds.defeat.muted = !gameSounds.defeat.muted;
+        gameSounds.pokeball.muted = !gameSounds.pokeball.muted;
+        gameSounds.victory.muted = !gameSounds.victory.muted;
+        gameSounds.attack.muted = !gameSounds.attack.muted;
+        gameSounds.startup.muted = !gameSounds.startup.muted;
+        gameSounds.intro.muted = !gameSounds.intro.muted;
+        gameSounds.ambiance.muted = !gameSounds.ambiance.muted;
+    });
+}
+/**
+ * Lancement de l'évènement click permettant de mute à la fin du chargement de la page
+ */
+$(document).ready(function() {
+    muteControl();
+});
+

@@ -17,21 +17,6 @@ services.getData(gameConfig.fileJson)
 		gameInfos.data.rulesBoard = data.game.board_rules;
 		jsonDone();
 	})
-	.catch(function () {
-		const msg = ['Une erreur s\'est produite lors de la récupération des données ...', 'Veuillez nous excuser pour la gêne occasionnée et revenir ultérieurement.', 'Si le problème persite merci de bien vouloir contacter l\'administrateur du site.'];
-		//Affichage d'une modal
-		displayModalText(msg);
-		window.onclick = (event) => {
-			if (event.target.className !== 'background-modal-content' && event.target.className !== 'background-modal-content-text') {
-				closeModalText();
-				event.stopPropagation();
-				window.onclick = null;
-			}
-		}
-		$('.background-modal-content-close').off('click').one("click",() => {
-		closeModalText();
-		})
-	})
 }
 const jsonDone = () => {
 	gameInfos.board = new Grid();
@@ -40,4 +25,3 @@ const jsonDone = () => {
 $(function () {
 	getDataJson();
 });
-

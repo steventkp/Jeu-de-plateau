@@ -242,12 +242,13 @@ export class Grid {
         }, 1000);
         setTimeout(() => {
             $('.weapon').addClass('visibility-hidden');
+            $('.player0,player1').removeClass('visibility-hidden');
         }, 2000);
         setTimeout(() => {
             $("#board *").css("border","1px solid rgba(0, 0, 0, 0.0)");
         }, 2500);
         setTimeout(() => {
-            $('#fight-buttons').css('visibility','visible');
+            $('#fight-buttons').toggleClass('visibility-hidden visibility-visible');
         },3500);
     }
     /**

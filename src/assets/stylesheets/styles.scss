@@ -15,7 +15,7 @@ body {
 }
 
 #board table {
-    background-image: $background-ground;
+    background-image: $background-ground-grass;
     background-repeat: repeat;
     border-spacing: 0;
 }
@@ -28,7 +28,7 @@ body {
 }
 
 .obstacle-case {
-    background-image: $obstacle;
+    background-image: $obstacle-tree;
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
@@ -351,7 +351,6 @@ body {
     top: 77px;
     border: solid 1px black;
     width: 622px;
-    visibility: hidden;
     user-select: none;
 }
 .inline-block
@@ -398,6 +397,9 @@ body {
 
 .visibility-hidden {
     visibility: hidden;
+}
+.visibility-visible {
+    visibility: visible;
 }
 
 .background-modal {
@@ -513,5 +515,5 @@ body {
 .victory-text
 {
    text-align: center;
-   font-size: 56px;
+   font-size: 34px;
 }

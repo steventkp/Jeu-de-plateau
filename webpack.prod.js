@@ -53,6 +53,16 @@ module.exports = {
               }
             },
             {
+              test: /\.(ogg|mp3|wav)$/i,
+              use: {
+                loader:'file-loader',
+                options:{
+                    name:'[hash].[ext]',
+                    outputPath:'audio/'
+                }
+              }
+            },
+            {
               test: /\.js$/,
               exclude: /node_modules/,
               use: "babel-loader"

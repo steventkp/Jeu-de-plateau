@@ -1,4 +1,5 @@
-import $ from 'jquery'
+import $ from 'jquery';
+import { displayModalText } from './gameboy';
 
 export const services = {
     /***
@@ -10,9 +11,16 @@ export const services = {
             $.get(url, (dataPromise) => {
                 dataPromise ? resolve(dataPromise) : reject(err);
             }).fail(function () {
-                console.log('Erreur dans la récuperation des données ! ');
+                errorGetData();
             })
         });
         return thisData;
     }
+}
+
+const errorGetData = () => {
+    const msg = ['Une erreur s\'est produite lors de la récupération des données ...', 'Veuillez nous excuser pour la gêne occasionnée et revenir ultérieurement.', 'Si le problème persite merci de bien vouloir contacter l\'administrateur du site.'];
+    $('#intro').fadeOut();
+    $('#player-names').fadeOut();
+    displayModalText(msg);
 }
