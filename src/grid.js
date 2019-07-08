@@ -59,8 +59,8 @@ export class Grid {
 
     /**
      *Méthode build qui créer le plateau avec numberCols et numberRows passés en paramètres
-     * @param {*} numberCols (Nombre de colonnes)
-     * @param {*} numberRows (Nombre de lignes)
+     * @param {*} numberCols Nombre de colonnes
+     * @param {*} numberRows Nombre de lignes
      * @memberof Grid
      */
     build(numberCols, numberRows) {
@@ -83,7 +83,7 @@ export class Grid {
     /**
      *Ajout les obstacles sur un ID aléatoire en les affichant via css et en stockant l'ID dans la variable dans
      *les tableaux usedCellIndexes et obstaclesPositions
-     * @param {*} numberObstacles(Le nombre d'obstacles voulu est passé en paramètre)
+     * @param {*} numberObstacles Le nombre d'obstacles voulu est passé en paramètre
      * @memberof Grid
      */
     createObstacle(numberObstacles) {
@@ -100,7 +100,7 @@ export class Grid {
     }
     /**
      *Ajout des armes sur un ID aléatoire
-     * @param {*} numberWeapons (Le nombre d'armes voulu sur le plateau est passé en paramètre)
+     * @param {*} numberWeapons Le nombre d'armes voulu sur le plateau est passé en paramètre
      * @memberof Grid
      */
     createWeapons(numberWeapons) {
@@ -117,7 +117,7 @@ export class Grid {
     }
     /**
      *Ajout des players sur un ID aléatoire
-     * @param {*} numberPlayers(Le nombre de joueurs est passé en paramètre)
+     * @param {*} numberPlayers Le nombre de joueurs est passé en paramètre
      * @memberof Grid
      */
     createPlayers(numberPlayers) {
@@ -136,7 +136,7 @@ export class Grid {
     }
     /**
      *Vérifie qu'il n'y a pas de joueur qui se situe sur les cases adjacentes
-     * @param {*} positionPlayer(la position du joueur sur lequel on effectue la recherche est passé en paramètre)
+     * @param {*} positionPlayer la position du joueur sur lequel on effectue la recherche est passé en paramètre
      * @returns(retourne un booléen en fonction du résultat)
      * @memberof Grid
      */
@@ -152,7 +152,7 @@ export class Grid {
     }
     /**
      *Met en surbrillance les cases accessibles à droite du joueur concerné
-     * @param {*} position(La position du joueur concerné est passé en paramètre)
+     * @param {*} position La position du joueur concerné est passé en paramètre
      * @memberof Grid
      */
     accessiblesRightCells(position){
@@ -167,7 +167,7 @@ export class Grid {
     }
     /**
      *Met en surbrillance les cases accessibles en bas du joueur concerné
-     * @param {*} position(La position du joueur concerné est passé en paramètre)
+     * @param {*} position La position du joueur concerné est passé en paramètre
      * @memberof Grid
      */
     accessiblesDownCells(position){
@@ -180,7 +180,7 @@ export class Grid {
     }
     /**
      *Met en surbrillance les cases accessibles à gauche du joueur concerné
-     * @param {*} position(La position du joueur concerné est passé en paramètre)
+     * @param {*} position La position du joueur concerné est passé en paramètre
      * @memberof Grid
      */
     accessiblesLeftCells(position){
@@ -195,7 +195,7 @@ export class Grid {
     }
     /**
      *Met en surbrillance les cases accessibles en haut du joueur concerné
-     * @param {*} position(La position du joueur concerné est passé en paramètre)
+     * @param {*} position La position du joueur concerné est passé en paramètre
      * @memberof Grid
      */
     accessiblesUpCells(position){
@@ -224,7 +224,7 @@ export class Grid {
     }
     /**
      *Change l'ID du joueur dans la variable gameInfos.currentPlayer
-     * @returns (renvoi l'ID du joueur)
+     * @returns renvoi l'ID du joueur
      * @memberof Grid
      */
     switchPlayer(){
@@ -248,12 +248,12 @@ export class Grid {
             $("#board *").css("border","1px solid rgba(0, 0, 0, 0.0)");
         }, 2500);
         setTimeout(() => {
-            $('#fight-buttons').toggleClass('visibility-hidden visibility-visible');
+            $('#fight-buttons').removeClass('visibility-hidden');
         },3500);
     }
     /**
      *Permet d'afficher un message dans la console du jeu
-     * @param {*} message
+     * @param {*} message Message a afficher en paramètre
      * @memberof Grid
      */
     messageUpdate(message){

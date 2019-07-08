@@ -17,7 +17,9 @@ export const services = {
         return thisData;
     }
 }
-
+/**
+ * Permet d'afficher une message d'erreur
+ */
 const errorGetData = () => {
     const msg = ['Une erreur s\'est produite lors de la récupération des données ...', 'Veuillez nous excuser pour la gêne occasionnée et revenir ultérieurement.', 'Si le problème persite merci de bien vouloir contacter l\'administrateur du site.'];
     $('#intro').fadeOut();
