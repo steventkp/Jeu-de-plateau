@@ -1,6 +1,10 @@
 # PROJET 6 - Créez un jeu de plateau tour par tour en JS
 Réalisé dans le cadre de la formation développeur d'application front-end Openclassrooms
 
+[LIEN DEMO](https://steventchakpe.com/openclassrooms/jeu_de_plateau/) 
+
+![Image du site d'avis de restaurants](https://steventchakpe.com/openclassrooms/img/jeu_de_plateau.png)
+
 
 ## Etape 1 : génération de la carte
 Commencez par générer aléatoirement la carte du jeu. Chaque case peut être soit :
